@@ -1,0 +1,65 @@
+# general setting
+backend: dp # DataParallel
+type: DPFM_Model
+num_gpu: auto
+manual_seed: 1234
+
+# path
+path:
+  resume_state: 
+  resume: false
+
+# datasets
+datasets:
+  test_dataset:
+    name: Val
+    type: PairShrec16Dataset
+    cut_type: holes
+    data_root: ../data/SHREC16_test/
+    return_evecs: true
+    return_faces: true
+    num_evecs: 30
+    return_corr: true
+    return_dist: true
+
+# network setting
+networks:
+  dpfm_net:
+    type: DPFMNet
+    # -----from original repo------
+    cfg: 
+      # fmap module params
+      fmap:
+        n_fmap: 30  # number of eigenvectors used for fmap
+        k_eig: 128  # number of eigenvectors used for diffusion
+        n_feat: 128
+        C_in: 3
+        lambda_: 100
+        resolvant_gamma: 0.5
+        robust: False
+      # attention module params
+      attention:
+        num_head: 4
+        gnn_dim: 128
+        ref_n_layers: 1
+        cross_sampling_ratio: 1.0
+        attention_type: normal
+      # overlap module
+      overlap:
+        overlap_feat_dim: 32
+    #----------------------------
+
+
+
+# validation setting
+val:
+  save_geo_errors: true
+  metrics:
+    geo_error:
+      type: calculate_geodesic_error
+    plot_pck_per_pair:
+      type: plot_pck_multiple
+    plot_pck:
+      type: plot_pck
+    plot_iou_curve:
+      type: plot_iou_curve

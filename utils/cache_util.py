@@ -5,6 +5,7 @@ import torch
 import inspect
 import scipy.sparse as sp  # added to support sparse matrices
 from utils.geometry_util import torch2np, hash_arrays
+import time
 
 def get_cached_compute(compute_fn, verts, faces, cache_dir=None, **kwargs):
     """
@@ -123,7 +124,8 @@ def get_cached_compute(compute_fn, verts, faces, cache_dir=None, **kwargs):
 
     if not found:
         # Compute the result.
-        print(f"cache miss, computing {compute_fn.__name__}")
+        print(f"cache miss, computing {compute_fn.__name__}", flush=True)
+        start_time = time.time()
         sig = inspect.signature(compute_fn)
         if 'faces' in sig.parameters:
             try:
@@ -135,6 +137,8 @@ def get_cached_compute(compute_fn, verts, faces, cache_dir=None, **kwargs):
                 result = compute_fn(verts, **kwargs)
             except Exception:
                 result = compute_fn(verts_np, **kwargs)
+        elapsed = time.time() - start_time
+        print(f"Computation took {elapsed:.2f} seconds", flush=True)
 
         # Convert results to a serializable format.
         if isinstance(result, (tuple, list)):

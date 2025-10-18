@@ -9,29 +9,32 @@
 import numpy as np
 import torch
 import time
-from pytorch3d.structures import Meshes
-from pytorch3d.renderer import Textures
-from utils.cache_util import get_cached_compute
-from pytorch3d.renderer.cameras import (
-    look_at_view_transform,
-    PerspectiveCameras,
-    camera_position_from_spherical_angles,
-    look_at_rotation,
-)
-from pytorch3d.renderer.mesh.rasterizer import RasterizationSettings, MeshRasterizer
-from pytorch3d.renderer.mesh.shader import HardPhongShader
-from pytorch3d.renderer import MeshRenderer
-from pytorch3d.renderer.lighting import PointLights
-import torch
-import math
-import numpy as np
-from torchvision import transforms as tfs
-import torch
-from PIL import Image
-import numpy as np
-from pytorch3d.ops import ball_query
-from tqdm import tqdm
-import random
+try:
+    from pytorch3d.structures import Meshes
+    from pytorch3d.renderer import Textures
+    from utils.cache_util import get_cached_compute
+    from pytorch3d.renderer.cameras import (
+        look_at_view_transform,
+        PerspectiveCameras,
+        camera_position_from_spherical_angles,
+        look_at_rotation,
+    )
+    from pytorch3d.renderer.mesh.rasterizer import RasterizationSettings, MeshRasterizer
+    from pytorch3d.renderer.mesh.shader import HardPhongShader
+    from pytorch3d.renderer import MeshRenderer
+    from pytorch3d.renderer.lighting import PointLights
+    import torch
+    import math
+    import numpy as np
+    from torchvision import transforms as tfs
+    import torch
+    from PIL import Image
+    import numpy as np
+    from pytorch3d.ops import ball_query
+    from tqdm import tqdm
+    import random
+except ImportError:
+    print("Warning: Failed to import pytorch3d. Some functionality may be limited.")
 
 import warnings
 warnings.filterwarnings("ignore")# Ignore all warnings globally for silent precomputation

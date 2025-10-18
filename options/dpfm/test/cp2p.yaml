@@ -1,0 +1,62 @@
+# general setting
+backend: dp # DataParallel
+type: DPFM_Model
+num_gpu: auto
+manual_seed: 1234
+
+# path
+path:
+  resume_state: checkpoints/dpfm/cp2p.pth
+  resume: false
+
+# datasets
+datasets:
+  test_dataset:
+    name: CP2PVal
+    type: PairCP2PDataset
+    data_root: ../data/CP2P_test/
+    return_evecs: True
+    return_faces: True
+    num_evecs: 50
+    return_corr: True
+    return_dist: True
+
+# network setting
+networks:
+  dpfm_net:
+    type: DPFMNet
+    # -----everything from official repo------
+    cfg: 
+      # fmap module params
+      fmap:
+        n_fmap: 50  # number of eigenvectors used for fmap
+        k_eig: 128  # number of eigenvectors used for diffusion
+        n_feat: 128
+        C_in: 3
+        lambda_: 100
+        resolvant_gamma: 0.5
+        robust: False
+      # attention module params
+      attention:
+        num_head: 4
+        gnn_dim: 128
+        ref_n_layers: 1
+        cross_sampling_ratio: 0.4 # this controls how points are downsampled for the attention module
+        attention_type: normal
+      # overlap module
+      overlap:
+        overlap_feat_dim: 32
+    #----------------------------
+
+# validation setting
+val:
+  save_geo_errors: true
+  metrics:
+    geo_error:
+      type: calculate_geodesic_error
+    plot_pck_per_pair:
+      type: plot_pck_multiple
+    plot_pck:
+      type: plot_pck
+    plot_iou_curve:
+      type: plot_iou_curve

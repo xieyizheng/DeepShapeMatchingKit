@@ -35,7 +35,37 @@ class RegularizedFMNet(nn.Module):
         C = torch.cat(C_i, dim=1)
 
         return C
+class FasterRegularizedFMNet(nn.Module):
+    """Compute the functional map matrix representation."""
 
+    def __init__(self, lambda_=1e-3, resolvant_gamma=0.5):
+        super().__init__()
+        self.lambda_ = lambda_
+        self.resolvant_gamma = resolvant_gamma
+
+    def forward(self, feat_x, feat_y, evals_x, evals_y, evecs_trans_x, evecs_trans_y):
+        evecs_trans_x, evecs_trans_y = evecs_trans_x.unsqueeze(0), evecs_trans_y.unsqueeze(0)
+        evals_x, evals_y = evals_x.unsqueeze(0), evals_y.unsqueeze(0)
+        A = torch.bmm(evecs_trans_x, feat_x)  # [B, K, C]
+        B = torch.bmm(evecs_trans_y, feat_y)  # [B, K, C]
+
+        D = get_mask(evals_x.flatten(), evals_y.flatten(), self.resolvant_gamma, feat_x.device).unsqueeze(0)
+
+        A_t = A.transpose(1, 2)  # [B, C, K]
+        A_A_t = torch.bmm(A, A_t)  # [B, K, K]
+        B_A_t = torch.bmm(B, A_t)  # [B, K, K]
+
+        DiagD = torch.diag_embed(D)       # [B, K, K, K]
+        Coeff = A_A_t.unsqueeze(1) + self.lambda_ * DiagD   # [B, K, K, K]
+
+        # Use ROW i of BAt as RHS (matches the loop): [B, K, K, 1]
+        RHS = B_A_t.unsqueeze(-1)           # no transpose here
+
+        # Option 1: numerically stable
+        X = torch.linalg.solve(Coeff, RHS)      # [B, K, K, 1]
+        Cxy = X.squeeze(-1)   
+
+        return Cxy
 class Similarity(nn.Module):
     def __init__(self, normalise_dim=-1, tau=0.2, hard=False):
         super(Similarity, self).__init__()
@@ -94,4 +124,4 @@ class Echo_Match_Net(nn.Module):
         )
 
         # regularized fmap
-        self.fmreg_net = RegularizedFMNet(lambda_=cfg["fmap"]["lambda_"], resolvant_gamma=cfg["fmap"]["resolvant_gamma"])
+        self.fmreg_net = FasterRegularizedFMNet(lambda_=cfg["fmap"]["lambda_"], resolvant_gamma=cfg["fmap"]["resolvant_gamma"])

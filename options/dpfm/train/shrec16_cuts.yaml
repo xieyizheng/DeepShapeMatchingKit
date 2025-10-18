@@ -1,0 +1,98 @@
+# general setting
+backend: dp # DataParallel
+type: DPFM_Model # only bug fix we introduced is the sampling function, without it the model behavior is degenerate
+num_gpu: auto
+manual_seed: 1234
+
+# path
+path:
+  resume: false
+
+# datasets
+datasets:
+  train_dataset:
+    name: Shrec16Train
+    type: PairShrec16Dataset
+    data_root: ../data/SHREC16/
+    cut_type: cuts
+    return_evecs: True
+    return_faces: True
+    num_evecs: 50
+    return_corr: True # supervised method for DPFM
+    return_dist: False
+  test_dataset:
+    name: Shrec16Val
+    type: PairShrec16Dataset
+    data_root: ../data/SHREC16_test/
+    cut_type: cuts
+    return_evecs: True
+    return_faces: True
+    num_evecs: 50
+    return_corr: True
+    return_dist: True
+  batch_size: 1
+  num_worker: 3
+
+# network setting
+networks:
+  dpfm_net:
+    type: DPFMNet
+    # -----from original repo------
+    cfg: 
+      # fmap module params
+      fmap:
+        n_fmap: 50  # number of eigenvectors used for fmap
+        k_eig: 128  # number of eigenvectors used for diffusion
+        n_feat: 128
+        C_in: 3
+        lambda_: 100
+        resolvant_gamma: 0.5
+        robust: False
+      # attention module params
+      attention:
+        num_head: 4
+        gnn_dim: 128
+        ref_n_layers: 1
+        cross_sampling_ratio: 0.4
+        attention_type: normal
+      # overlap module
+      overlap:
+        overlap_feat_dim: 32
+    #----------------------------
+
+# training setting
+train:
+  total_epochs: 900 # we change nonthing of the original config other than extending total epochs trained to try to match the paper as much as possilbe
+  optims:
+    dpfm_net:
+      type: Adam
+      lr: 1.0e-3
+      betas: [0.9, 0.99]
+  schedulers:
+    dpfm_net:
+      type: StepLR
+      step_size: 100
+      gamma: 0.5
+  losses:
+    dpfm_loss:
+      type: DPFMLoss
+      w_fmap: 1
+      w_acc: 1
+      w_nce: 1 # original repo does not use NCE loss; paper says it does; we respect the repo
+      nce_t: 0.07
+
+# validation setting
+val:
+  val_freq: 1000
+  metrics:
+    geo_error:
+      type: calculate_geodesic_error
+    plot_pck:
+      type: plot_pck
+    plot_iou_curve:
+      type: plot_iou_curve
+
+# log setting
+logger:
+  print_freq: 20
+  save_checkpoint_freq: 1000

@@ -1,0 +1,98 @@
+# general setting
+backend: dp # DataParallel
+type: DPFM_Model
+num_gpu: auto
+manual_seed: 1234
+
+# path
+path:
+  resume: false
+
+# datasets
+datasets:
+  train_dataset:
+    name: ScapeTrain
+    type: PairScapeDataset
+    phase: train
+    data_root: ../data/SCAPE_r
+    return_evecs: true
+    return_faces: true
+    num_evecs: 50
+    return_corr: true
+    return_dist: false
+  test_dataset:
+    name: ScapeTest
+    type: PairScapeDataset
+    phase: test
+    data_root: ../data/SCAPE_r
+    return_evecs: true
+    return_faces: true
+    num_evecs: 50
+    return_corr: true
+    return_dist: true
+  batch_size: 1
+  num_worker: 12
+
+# network setting
+networks:
+  dpfm_net:
+    type: DPFMNet
+    # -----from original repo------ we follow the cuts config exactly
+    cfg: 
+      # fmap module params
+      fmap:
+        n_fmap: 50  # number of eigenvectors used for fmap
+        k_eig: 128  # number of eigenvectors used for diffusion
+        n_feat: 128
+        C_in: 3
+        lambda_: 100
+        resolvant_gamma: 0.5
+        robust: False
+      # attention module params
+      attention:
+        num_head: 4
+        gnn_dim: 128
+        ref_n_layers: 1
+        cross_sampling_ratio: 1.0
+        attention_type: normal
+      # overlap module
+      overlap:
+        overlap_feat_dim: 32
+    #----------------------------
+
+# training setting
+train:
+  total_epochs: 900 # we change nothing other than extending the training time for better clarity to match paper score
+  optims:
+    dpfm_net:
+      type: Adam
+      lr: 1.0e-3
+      betas: [0.9, 0.99]
+  schedulers:
+    dpfm_net:
+      type: StepLR
+      step_size: 100
+      gamma: 0.5
+  losses:
+    dpfm_loss:
+      type: DPFMLoss
+      w_fmap: 1
+      w_acc: 1
+      w_nce: 1 
+      nce_t: 0.07
+
+# validation setting
+val:
+  val_freq: 1000
+  metrics:
+    geo_error:
+      type: calculate_geodesic_error
+    plot_pck:
+      type: plot_pck
+    plot_iou_curve:
+      type: plot_iou_curve
+
+# log setting
+logger:
+  print_freq: 20
+  save_checkpoint_freq: 1000
