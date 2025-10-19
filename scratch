@@ -1,0 +1,2 @@
+cmake -DBUILD_PYTHON=ON .. -DPython_EXECUTABLE=/media/xieyizheng/PoseDrive/conda_envs/echo-match/bin/python
+cmake --build . --config Release

@@ -9,10 +9,10 @@
 import numpy as np
 import torch
 import time
+from utils.cache_util import get_cached_compute
 try:
     from pytorch3d.structures import Meshes
     from pytorch3d.renderer import Textures
-    from utils.cache_util import get_cached_compute
     from pytorch3d.renderer.cameras import (
         look_at_view_transform,
         PerspectiveCameras,

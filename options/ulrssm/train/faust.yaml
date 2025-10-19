@@ -34,7 +34,7 @@ datasets:
     return_corr: True
     return_dist: True
   batch_size: 1
-  num_worker: 0
+  num_worker: 16
 
 # network setting
 networks:

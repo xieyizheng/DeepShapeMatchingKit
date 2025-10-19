@@ -19,7 +19,7 @@ def get_shape_operators_and_data(item, cache_dir, config):
     if config.get('return_elas_evecs', False):
         bending_weight = config.get('bending_weight', 1e-2)
         item = get_elas_spectral_ops(item, num_evecs=config.get('num_evecs', 200), bending_weight=bending_weight, cache_dir=os.path.join(cache_dir, f'elastic_harmonic_{bending_weight}'))
-        
+    
     if config.get('return_dist', False):
         item['dist'] = get_geodesic_distmat(verts, faces, cache_dir=os.path.join(cache_dir, 'dist'))
     
@@ -78,39 +78,10 @@ def get_elas_spectral_ops(item, num_evecs, bending_weight=1e-2, cache_dir=None):
     mass, evals, evecs = get_elas_operators(item['verts'], item.get('faces'),
                                                    k=num_evecs, bending_weight=bending_weight, 
                                                    cache_dir=cache_dir)
-    # evecs = treat_nan(evecs, item['verts'], item['name'])
-    mass = mass + 1e-8 * mass.mean()
-    sqrtmass = torch.sqrt(mass)
-    
-    def const_proj(evec, sqrtmass):
-        # orthogonal projector for elastic basis
-        sqrtM = torch.diag(sqrtmass)
-        return torch.linalg.pinv(sqrtM @ evec) @ sqrtM
-    evecs_trans = const_proj(evecs[:, :num_evecs], sqrtmass)
-    Mk = evecs.T @ torch.diag(mass) @ evecs
     item['elas_evecs'] = evecs[:, :num_evecs]
-    item['elas_evecs_trans'] = evecs_trans[:num_evecs]
     item['elas_evals'] = evals[:num_evecs]
     item['elas_mass'] = mass
-    item['elas_Mk'] = Mk
-    sqrtMk = scipy.linalg.sqrtm(to_numpy(Mk)).real #numerical weirdness 
-    sqrtMk = torch.tensor(sqrtMk).float().to(Mk.device)
-    invsqrtMk = torch.linalg.pinv(sqrtMk)
-    item['elas_sqrtMk'] = sqrtMk
-    item['elas_invsqrtMk'] = invsqrtMk
     return item
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def sort_list(l):
