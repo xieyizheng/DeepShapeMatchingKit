@@ -6,7 +6,8 @@ manual_seed: 1234
 
 # path
 path:
-  resume: false
+  resume_state: experiments/dpfm/dpfm_psmal_xyz_10190727/models/best.pth
+  resume: true
 
 # datasets
 datasets:

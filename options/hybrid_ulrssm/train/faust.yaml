@@ -36,7 +36,7 @@ datasets:
     return_elas_evecs: true
     bending_weight: 0.01
   batch_size: 1
-  num_worker: 16
+  num_worker: 1
 
 # network setting
 networks:

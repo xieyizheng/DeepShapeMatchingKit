@@ -97,6 +97,24 @@ def parse(opt_path, root_path, is_train=True, override_path=None):
         opt['path']['visualization'] = osp.join(results_root, 'visualization')
         opt['path']['pcks'] = osp.join(results_root, 'pcks')
         opt['path']['heatmaps'] = osp.join(results_root, 'heatmaps')
+
+        # also include experiments_root and log for test
+        experiments_root = osp.join(root_path, 'experiments', sub_folder, opt['name'])
+        opt['path']['experiments_root'] = experiments_root
+        opt['path']['models'] = osp.join(experiments_root, 'models')
+        opt['path']['log'] = osp.join(experiments_root, 'log')
+
+        # check whether the resume_state ckpt file exists
+        if opt['path'].get('resume_state') and osp.exists(opt['path']['resume_state']):
+            print(f'Found resume_state in {opt["path"]["resume_state"]}')
+        else:
+            # try to find a best.ckpt from the experiments_root
+            best_ckpt = osp.join(experiments_root, 'models', 'best.pth')
+            if osp.exists(best_ckpt):
+                opt['path']['resume_state'] = best_ckpt
+                print(f'Found best.ckpt in {experiments_root}')
+            else:
+                print(f'Warning: No best.ckpt found in {experiments_root}')
     
     return opt
 

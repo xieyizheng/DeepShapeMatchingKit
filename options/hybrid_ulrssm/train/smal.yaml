@@ -38,7 +38,7 @@ datasets:
     return_elas_evecs: true
     bending_weight: 0.01
   batch_size: 1
-  num_worker: 12
+  num_worker: 1
 
 # network setting
 networks:
@@ -46,10 +46,9 @@ networks:
     type: DiffusionNet
     in_channels: 3
     out_channels: 256
-    cache_dir: ../data/SMAL_r/diffusion
     input_type: xyz
   fmap_net:
-    type: RegularizedFMNet
+    type: FasterRegularizedFMNet
     bidirectional: true
   expanded_fmap_net:
     type: ExpandedResolventFMNet

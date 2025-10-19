@@ -10,6 +10,7 @@ from utils.logger import AvgTimer
 from utils.tensor_util import to_numpy
 import pickle
 from metrics.overlap_metric import calculate_overlap_iou, plot_pck_p2p, calculate_overlap_auc, write_geo_error_to_file
+import wandb
 
 
 class PartialBaseModel(BaseModel):
@@ -108,6 +109,13 @@ class PartialBaseModel(BaseModel):
             for variant_name, variant_avg_geo_error in variant_metrics_result.items():
                 tb_logger.add_scalar(f'val {variant_name} avg error', variant_avg_geo_error, global_step=step)
         else: # test, save to disk
+            wandb.log({
+                'test avg error': avg_geo_error,
+                'test miou1': miou1,
+                'test miou2': miou2,
+                'test auc': auc,
+                'test auc_all': auc_all
+            })
             pck_fig.savefig(os.path.join(self.opt['path']['results_root'], 'pck.png'))
             pck_fig_all.savefig(os.path.join(self.opt['path']['results_root'], 'pck_all.png'))
             iou_fig.savefig(os.path.join(self.opt['path']['results_root'], 'iou_curve.png'))
@@ -136,6 +144,9 @@ class PartialBaseModel(BaseModel):
             self.best_networks_state_dict = self._get_networks_state_dict()
             logger.info(f'Best model is updated, average geodesic error: {self.best_metric:.4f}')
             self.save_model(net_only=False, best=True, save_filename="best.pth")
+            self.no_improvement_counter = 0
+        else: # counter for no improvement
+            self.no_improvement_counter += 1
 
         # train mode
         self.train()

@@ -47,7 +47,7 @@ datasets:
     return_corr: True
     return_dist: True
   batch_size: 1
-  num_worker: 16
+  num_worker: 1
 
 # network setting
 networks:
@@ -55,10 +55,9 @@ networks:
     type: DiffusionNet
     in_channels: 128
     out_channels: 256
-    cache_dir: ../data/DT4D_r/diffusion
     input_type: wks
   fmap_net:
-    type: RegularizedFMNet
+    type: FasterRegularizedFMNet
     bidirectional: true
   permutation:
     type: Similarity

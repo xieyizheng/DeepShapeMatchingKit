@@ -86,7 +86,10 @@ def train_pipeline(root_path):
         # save the ts in the log folder for later archiving
         with open(osp.join(opt['path']['log'], 'ts.txt'), 'w') as f:
             f.write(ts)
-        wandb.init(project='echo-match', config=opt, sync_tensorboard=True, name=name)
+        run = wandb.init(project='deepshapematching', config=opt, sync_tensorboard=True, name=name)
+        # save run id to log folder
+        with open(osp.join(opt['path']['log'], 'wandb_run_id.txt'), 'w') as f:
+            f.write(run.id)
 
     # WARNING: should not use get_root_logger in the above codes, including the called functions
     # Otherwise the logger will not be properly initialized
@@ -154,6 +157,13 @@ def train_pipeline(root_path):
                     torch.cuda.empty_cache()
                     model.data_root = val_loader.dataset.data_root
                     model.validation(val_loader, tb_logger)
+                    # after each validation, check if early stopping
+                    early_stopping_patience = opt['train'].get('early_stopping_patience', 25)
+                    print(model.no_improvement_counter, early_stopping_patience)
+                    if model.no_improvement_counter > early_stopping_patience: # early stopping
+                        logger.info(f'No improvement for too many iterations ({early_stopping_patience} validations). Early stopping.')
+                        model.save_model(net_only=False, best=False)
+                        sys.exit(0)
                 model.data_root = train_loader.dataset.data_root
                 data_timer.start()
                 iter_timer.start()

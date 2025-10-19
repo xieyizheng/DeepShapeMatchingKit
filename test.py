@@ -4,11 +4,24 @@ from datasets import build_dataloader, build_dataset
 from models import build_model
 from utils import get_env_info, get_root_logger, get_time_str
 from utils.options import dict2str, parse_options
-
-
+import wandb
+import datetime
+from utils.logger import init_web_logger
+def init_loggers(opt):
+    tb_logger = init_web_logger(opt['path']['results_root'])
+    return tb_logger
 def test_pipeline(root_path):
     # parse options, set distributed setting, set random seed
     opt = parse_options(root_path, is_train=False)
+
+    # wandb
+    run_id = osp.join(opt['path']['log'], 'wandb_run_id.txt')
+    if osp.exists(run_id):
+        with open(run_id, 'r') as f:
+            run_id = f.read()
+    else:
+        run_id = None
+    wandb.init(project='deepshapematching', id=run_id, resume='allow')
 
     # initialize loggers
     log_file = osp.join(opt['path']['log'], f"test_{opt['name']}_{get_time_str()}.log")

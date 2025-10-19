@@ -22,6 +22,7 @@ from utils.dist_util import master_only
 from utils.logger import AvgTimer
 from utils.tensor_util import to_numpy
 import pickle
+import wandb
 
 
 class BaseModel:
@@ -40,6 +41,7 @@ class BaseModel:
         self.opt = opt
         self.device = torch.device('cuda' if opt['num_gpu'] != 0 else 'cpu')
         self.is_train = opt['is_train']
+        self.no_improvement_counter = 0
 
         # build networks
         self.networks = OrderedDict()
@@ -239,6 +241,10 @@ class BaseModel:
                 tb_logger.add_scalar('val auc', auc, global_step=step)
                 tb_logger.add_scalar('val avg error', avg_geo_error, global_step=step)
             else:
+                wandb.log({
+                    'val auc': auc,
+                    'val avg error': avg_geo_error,
+                })
                 # save image
                 plt.savefig(os.path.join(self.opt['path']['results_root'], 'pck.png'))
                 # save pcks
@@ -256,6 +262,9 @@ class BaseModel:
                 logger.info(f'Best model is updated, average geodesic error: {self.best_metric:.4f}')
                 # save current best model
                 self.save_model(net_only=False, best=True, save_filename="best.pth")
+                self.no_improvement_counter = 0
+            else: # counter for no improvement
+                self.no_improvement_counter += 1
 
         # train mode
         self.train()
