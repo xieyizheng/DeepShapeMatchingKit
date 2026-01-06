@@ -2,7 +2,7 @@ from copy import deepcopy
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from networks.diffusion_network import DiffusionNet
+from networks.diffusion_a_network import DiffusionNet_A
 from utils.dpfm_util import nn_interpolate, get_mask
 from utils.registry import NETWORK_REGISTRY
 
@@ -208,7 +208,7 @@ class DPFMNet(nn.Module):
         super().__init__()
 
         # feature extractor
-        self.feature_extractor = DiffusionNet(
+        self.feature_extractor = DiffusionNet_A(
             in_channels=cfg["fmap"]["C_in"],
             out_channels=cfg["fmap"]["n_feat"],
             hidden_channels=128,

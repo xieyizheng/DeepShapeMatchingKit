@@ -1,8 +1,11 @@
 import torch
 from torch import nn
 import numpy as np
-from umap import UMAP
-from umap.umap_ import find_ab_params
+try:
+    from umap import UMAP
+    from umap.umap_ import find_ab_params
+except ImportError:
+    print("Warning: Failed to import umap. Some functionality may be limited.")
 from utils.cache_util import get_cached_compute
 
 def get_2d_umap_emb(verts, faces, distances, cache_dir=None):

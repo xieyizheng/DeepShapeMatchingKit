@@ -177,43 +177,46 @@ def hybrid_zoomout(p2p, evecs_x, evecs_y, elas_evecs_x, elas_evecs_y, mass1, mas
     
     return p2p
 
-def trim_basis(data, n_lb, n_elas):
+def trim_basis(data, n, elas_n):
     """
     trim the spectral operators (both LB ad Elastic) to specified numbers, intended for mixing up basis Fmap computation
 
     """
     # everthing has a batch dim
-    if n_lb > 0:
-        data['evals'] = data['evals'][:, :n_lb]
-        data['evecs'] = data['evecs'][:, :, :n_lb]
-        data['evecs_trans'] = data['evecs_trans'][:, :n_lb, :]
-    if n_elas > 0:
-        data['elas_evals'] = data['elas_evals'][:, :n_elas]
-        data['elas_evecs'] = data['elas_evecs'][:, :, :n_elas]
+    evals = data['evals']
+    elas_evals = data['elas_evals']
+    data['evals'] = data['evals'][:, :n]
+    data['evecs'] = data['evecs'][:, :, :n]
+    data['evecs_trans'] = data['evecs_trans'][:, :n, :]
+    if elas_n > 0:
+        data['elas_evals'] = elas_evals[:, :elas_n]
+        data['elas_evecs'] = data['elas_evecs'][:, :, :elas_n]
+
+        # recompute the elastic evecs_trans
+        mass = data['elas_mass'].squeeze(0)
+        sqrtmass = torch.sqrt(mass)
+        evecs = data['elas_evecs'].squeeze(0)
+        def const_proj(evec, sqrtmass):
+            # orthogonal projector for elastic basis
+            sqrtM = torch.diag(sqrtmass)
+            return torch.linalg.pinv(sqrtM @ evec) @ sqrtM
+        evecs_trans = const_proj(evecs, sqrtmass)
+
+        data['elas_evecs_trans'] = evecs_trans.unsqueeze(0)
 
         # recompute the elastic Mk
-        mass = data['elas_mass'].squeeze(0)
-        evecs = data['elas_evecs'].squeeze(0)
         Mk = evecs.T @ torch.diag(mass) @ evecs
         data['elas_Mk'] = Mk.unsqueeze(0)
 
-        # recompute the elastic evecs_trans
-        L = torch.linalg.cholesky(Mk)                     # Mk = L L^T
-        rhs = (evecs.T * mass)                                   # [k, n]  (E^T M)
-        evecs_trans = torch.cholesky_solve(rhs, L)        # [k, n]
-        data['elas_evecs_trans'] = evecs_trans.unsqueeze(0)
-
-        # recompute the elastic sqrtMk and invsqrtMk
-        w, V = torch.linalg.eigh(Mk)                      # Mk = V diag(w) V^T
-        w_clamped = torch.clamp(w, min=1e-12)
-        sqrtw = torch.sqrt(w_clamped)
-        invsqrtw = 1.0 / sqrtw
-        sqrtMk = (V * sqrtw) @ V.T                        # V diag(sqrtw) V^T
-        invsqrtMk = (V * invsqrtw) @ V.T                  # V diag(1/sqrtw) V^T
+        # recompute sqrtMk and invsqrtMk
+        sqrtMk = scipy.linalg.sqrtm(to_numpy(Mk)).real #numerical weirdness from LB
+        sqrtMk = torch.tensor(sqrtMk).float().to(Mk.device)
+        invsqrtMk = torch.linalg.pinv(sqrtMk)
         data['elas_sqrtMk'] = sqrtMk.unsqueeze(0)
         data['elas_invsqrtMk'] = invsqrtMk.unsqueeze(0)
 
     return data
+
 
 def corr2fmap(corr_x, corr_y, evecs_x, evecs_y):
     """

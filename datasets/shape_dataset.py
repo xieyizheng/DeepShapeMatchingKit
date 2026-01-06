@@ -87,7 +87,7 @@ class SingleShapeDataset(Dataset):
             item['faces'] = torch.from_numpy(faces).long()
 
         # get shape operators and data
-        item = get_shape_operators_and_data(item, cache_dir=os.path.join(self.data_root), config={**self.config, "return_dist": False})
+        item = get_shape_operators_and_data(item, cache_dir=os.path.join(self.data_root), config={**self.config})
 
         # get correspondences
         if self.return_corr:

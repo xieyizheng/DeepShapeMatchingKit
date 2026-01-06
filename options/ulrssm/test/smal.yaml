@@ -30,7 +30,7 @@ datasets:
 
 networks:
   feature_extractor:
-    type: DiffusionNet
+    type: DiffusionNet_B
     in_channels: 3
     out_channels: 256
     input_type: xyz

@@ -7,7 +7,7 @@ manual_seed: 1234
 refine: 15
 non-isometric: false
 partial: false
-visualize: true
+# visualize: true
 
 # path
 path:
@@ -28,13 +28,12 @@ datasets:
 
 networks:
   feature_extractor:
-    type: DiffusionNet
+    type: DiffusionNet_B
     in_channels: 128
     out_channels: 256
-    cache_dir: ../data/TOPKIDS/diffusion
     input_type: wks
   fmap_net:
-    type: RegularizedFMNet
+    type: FasterRegularizedFMNet
     bidirectional: false
   permutation:
     type: Similarity

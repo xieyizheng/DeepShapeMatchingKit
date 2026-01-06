@@ -39,13 +39,12 @@ datasets:
 # network setting
 networks:
   feature_extractor:
-    type: DiffusionNet
+    type: DiffusionNet_B
     in_channels: 128
     out_channels: 256
-    cache_dir: ../data/SCAPE_r/diffusion
     input_type: wks
   fmap_net:
-    type: RegularizedFMNet
+    type: FasterRegularizedFMNet
     bidirectional: true
   permutation:
     type: Similarity

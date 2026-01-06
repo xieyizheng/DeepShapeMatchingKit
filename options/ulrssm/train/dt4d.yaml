@@ -1,5 +1,4 @@
 # general setting
-name: dt4d
 backend: dp # DataParallel
 type: ULRSSM_Model
 num_gpu: auto
@@ -52,7 +51,7 @@ datasets:
 # network setting
 networks:
   feature_extractor:
-    type: DiffusionNet
+    type: DiffusionNet_B
     in_channels: 128
     out_channels: 256
     input_type: wks

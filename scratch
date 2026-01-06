@@ -1,2 +1,6 @@
-cmake -DBUILD_PYTHON=ON .. -DPython_EXECUTABLE=/media/xieyizheng/PoseDrive/conda_envs/echo-match/bin/python
+git clone https://gitlab.com/numod/shell-energy.git
+cd shell-energy
+mkdir build
+cd build
+cmake -DBUILD_PYTHON=ON .. -DPython_EXECUTABLE=$(which python)
 cmake --build . --config Release

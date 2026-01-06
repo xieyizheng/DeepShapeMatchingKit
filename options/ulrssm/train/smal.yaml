@@ -1,5 +1,4 @@
 # general setting
-name: smal
 backend: dp # DataParallel
 type: ULRSSM_Model
 num_gpu: auto
@@ -35,19 +34,24 @@ datasets:
     num_evecs: 200
     return_corr: True
     return_dist: True
+  # setting for train dataset
   batch_size: 1
-  num_worker: 6
+  num_worker: 1
 
 # network setting
 networks:
   feature_extractor:
-    type: DiffusionNet
+    type: DiffusionNet_B
     in_channels: 3
     out_channels: 256
-    cache_dir: ../data/SMAL_r/diffusion
     input_type: xyz
+    augmentation:
+      train:
+        rot_x: 0.0
+        rot_y: 90.0
+        rot_z: 0.0
   fmap_net:
-    type: RegularizedFMNet
+    type: FasterRegularizedFMNet
     bidirectional: true
   permutation:
     type: Similarity

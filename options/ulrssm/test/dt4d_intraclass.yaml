@@ -6,7 +6,7 @@ num_gpu: auto
 manual_seed: 1234
 non-isometric: false
 partial: false
-visualize: true
+# visualize: true
 
 # path
 path:
@@ -29,10 +29,9 @@ datasets:
 
 networks:
   feature_extractor:
-    type: DiffusionNet
+    type: DiffusionNet_B
     in_channels: 128
     out_channels: 256
-    cache_dir: ../data/DT4D_r/diffusion
     input_type: wks
   permutation:
     type: Similarity

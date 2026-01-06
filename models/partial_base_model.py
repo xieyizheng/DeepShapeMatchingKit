@@ -10,6 +10,7 @@ from utils.logger import AvgTimer
 from utils.tensor_util import to_numpy
 import pickle
 from metrics.overlap_metric import calculate_overlap_iou, plot_pck_p2p, calculate_overlap_auc, write_geo_error_to_file
+from sklearn.metrics import balanced_accuracy_score
 import wandb
 
 
@@ -54,6 +55,7 @@ class PartialBaseModel(BaseModel):
             geo_err = self.metrics['geo_error'](dist_x, corr_x, corr_y, p2p, return_mean=False)
             filtered_geo_err = calculate_overlap_auc(geo_err, overlap_score21, gt_overlap21, corr_y)
             iou1, iou2 = calculate_overlap_iou(overlap_score12, gt_overlap12), calculate_overlap_iou(overlap_score21, gt_overlap21)
+            b_acc1, b_acc2 = balanced_accuracy_score(gt_overlap12, overlap_score12 > 0.5), balanced_accuracy_score(gt_overlap21, overlap_score21 > 0.5)
 
             # save metrics and results
             metrics_result.setdefault('p2p', []).append(p2p)
@@ -63,6 +65,8 @@ class PartialBaseModel(BaseModel):
             metrics_result.setdefault('filtered_geo_errors', []).append(filtered_geo_err)
             metrics_result.setdefault('iou1', []).append(iou1)
             metrics_result.setdefault('iou2', []).append(iou2)
+            metrics_result.setdefault('b_acc1', []).append(b_acc1)
+            metrics_result.setdefault('b_acc2', []).append(b_acc2)
 
             # display so far on screen
             geo_err_so_far = np.concatenate(metrics_result['geo_errors']).mean()
@@ -85,6 +89,8 @@ class PartialBaseModel(BaseModel):
         avg_geo_error = all_geo_errors.mean()
         miou1 = np.mean(metrics_result['iou1'])
         miou2 = np.mean(metrics_result['iou2'])
+        b_acc1 = np.mean(metrics_result['b_acc1'])
+        b_acc2 = np.mean(metrics_result['b_acc2'])
         for variant_name, variant_p2p in variant_metrics_result.items():
             variant_all_geo_errors = np.concatenate(variant_p2p)
             variant_avg_geo_error = variant_all_geo_errors.mean()
@@ -106,6 +112,8 @@ class PartialBaseModel(BaseModel):
             tb_logger.add_scalar('val avg error', avg_geo_error, global_step=step)
             tb_logger.add_scalar('val miou1', miou1, global_step=step)
             tb_logger.add_scalar('val miou2', miou2, global_step=step)
+            tb_logger.add_scalar('val b_acc1', b_acc1, global_step=step)
+            tb_logger.add_scalar('val b_acc2', b_acc2, global_step=step)
             for variant_name, variant_avg_geo_error in variant_metrics_result.items():
                 tb_logger.add_scalar(f'val {variant_name} avg error', variant_avg_geo_error, global_step=step)
         else: # test, save to disk
@@ -113,6 +121,8 @@ class PartialBaseModel(BaseModel):
                 'test avg error': avg_geo_error,
                 'test miou1': miou1,
                 'test miou2': miou2,
+                'test b_acc1': b_acc1,
+                'test b_acc2': b_acc2,
                 'test auc': auc,
                 'test auc_all': auc_all
             })
@@ -125,6 +135,7 @@ class PartialBaseModel(BaseModel):
         logger = get_root_logger()
         logger.info(f'Avg time: {timer.get_avg_time():.4f}')
         logger.info(f'miou1: {miou1:.4f} | miou2: {miou2:.4f}')
+        logger.info(f'b_acc1: {b_acc1:.4f} | b_acc2: {b_acc2:.4f}')
         logger.info(f'Val auc: {auc:.4f}')
         logger.info(f'Val auc_all: {auc_all:.4f}')
         logger.info(f'Val avg error: {avg_geo_error:.4f}')

@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from networks.diffusion_network import DiffusionNet
+from networks.diffusion_a_network import DiffusionNet_A
 from utils.fmap_util import get_mask
 from utils.registry import NETWORK_REGISTRY
 
@@ -95,7 +95,7 @@ class Echo_Match_Net(nn.Module):
         self.cfg = cfg
 
         # feature extractor
-        self.feature_extractor = DiffusionNet(
+        self.feature_extractor = DiffusionNet_A(
             in_channels=cfg["feature_extractor"]["in_channels"],
             out_channels=cfg["feature_extractor"]["out_channels"],
             hidden_channels=cfg["feature_extractor"]["out_channels"],
@@ -112,7 +112,7 @@ class Echo_Match_Net(nn.Module):
         self.permutation_network = Similarity(tau=learned_tau)
 
         # another diffusionnet for regress overlap
-        self.overlap_diffusion_net = DiffusionNet(
+        self.overlap_diffusion_net = DiffusionNet_A(
             in_channels=cfg["overlap"]["neighbor_size"],
             out_channels=1,
             hidden_channels=cfg["overlap"]["hidden_channels"],

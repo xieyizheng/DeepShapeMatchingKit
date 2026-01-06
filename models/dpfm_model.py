@@ -16,7 +16,7 @@ class DPFM_Model(PartialBaseModel):
     def feed_data(self, data):
         # quirk for dpfm attention
         cross_sampling_ratio = self.opt["networks"]['dpfm_net']['cfg']['attention']['cross_sampling_ratio']
-        cache_sample_idx(data, cross_sampling_ratio=cross_sampling_ratio, cache_dir=os.path.join(self.data_root, 'sample_idx')) # for caching opereation can use 1.0 and afterwards will be flexible for any ratio
+        cache_sample_idx(data, cross_sampling_ratio=cross_sampling_ratio, cache_dir='../data/DPFM/sample_idx') # for caching opereation can use 1.0 and afterwards will be flexible for any ratio
 
         # get data pair
         data = to_device(data, self.device)
@@ -64,7 +64,7 @@ class DPFM_Model(PartialBaseModel):
         
         # quirk for dpfm attention
         cross_sampling_ratio = self.opt["networks"]['dpfm_net']['cfg']['attention']['cross_sampling_ratio']
-        cache_sample_idx(data, cross_sampling_ratio=cross_sampling_ratio, cache_dir=os.path.join(self.data_root, 'sample_idx')) # for caching opereation can use 1.0 and afterwards will be flexible for any ratio
+        cache_sample_idx(data, cross_sampling_ratio=cross_sampling_ratio, cache_dir='../data/DPFM/sample_idx') # for caching opereation can use 1.0 and afterwards will be flexible for any ratio
 
         # get data pair
         data = to_device(data, self.device)

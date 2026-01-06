@@ -233,7 +233,12 @@ class ExpandedResolventFMNet(nn.Module):
         else:
             Ik = torch.eye(k, device=A.device, dtype=torch.float32)
         
-        At_Ik = torch.kron(A_t, Ik)
+        # At_Ik = torch.kron(A_t, Ik)
+        # https://github.com/xieyizheng/hybridfmaps/issues/1#issuecomment-2799833451
+        def efficient_kron(a, b):
+            s_a, s_b = a.size(), b.size()
+            return torch.einsum('ab,cd->acbd', a, b).reshape(s_a[0]*s_b[0], s_a[1]*s_b[1])
+        At_Ik = efficient_kron(A_t, Ik) # torch.kron(A_t, Ik)
 
         first = At_Ik.T @ At_Ik
 
@@ -275,7 +280,10 @@ class ExpandedResolventFMNet(nn.Module):
         rhs = At_Ik.T @ vec_B
         op = first + self.lmbda * second
 
-        C = torch.linalg.solve(op, rhs)
+        # C = torch.linalg.solve(op, rhs)
+        # https://github.com/xieyizheng/hybridfmaps/issues/1#issuecomment-2799833451
+        op_reg = op + 1e-6 * torch.eye(op.size(0), device=op.device)
+        C = torch.linalg.solve(op_reg, rhs)
 
         C = C.reshape(k, k).T
         

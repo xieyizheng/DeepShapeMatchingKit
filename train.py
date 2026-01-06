@@ -3,7 +3,7 @@ import sys
 import math
 import time
 from os import path as osp
-
+import os
 import torch.cuda
 
 from datasets import build_dataloader, build_dataset
@@ -83,6 +83,10 @@ def train_pipeline(root_path):
         name = model_string + '_' + opt['name']
         ts = f'_{datetime.datetime.now().strftime("%m%d%H%M")}'
         name += ts
+        # slurm job id
+        job_id = os.environ.get('SLURM_JOB_ID')
+        if job_id:
+            name += f'_job_{job_id}'
         # save the ts in the log folder for later archiving
         with open(osp.join(opt['path']['log'], 'ts.txt'), 'w') as f:
             f.write(ts)
@@ -120,7 +124,7 @@ def train_pipeline(root_path):
         while model.curr_epoch < total_epochs:
             model.curr_epoch += 1
             train_sampler.set_epoch(model.curr_epoch)
-            model.data_root = train_loader.dataset.data_root
+            # model.data_root = train_loader.dataset.data_root
             for train_data in train_loader:
                 data_timer.record()
 
@@ -155,7 +159,7 @@ def train_pipeline(root_path):
                 if opt.get('val') is not None and (model.curr_iter % opt['val']['val_freq'] == 0):
                     logger.info('Start validation.')
                     torch.cuda.empty_cache()
-                    model.data_root = val_loader.dataset.data_root
+                    # model.data_root = val_loader.dataset.data_root
                     model.validation(val_loader, tb_logger)
                     # after each validation, check if early stopping
                     early_stopping_patience = opt['train'].get('early_stopping_patience', 25)
@@ -164,7 +168,7 @@ def train_pipeline(root_path):
                         logger.info(f'No improvement for too many iterations ({early_stopping_patience} validations). Early stopping.')
                         model.save_model(net_only=False, best=False)
                         sys.exit(0)
-                model.data_root = train_loader.dataset.data_root
+                # model.data_root = train_loader.dataset.data_root
                 data_timer.start()
                 iter_timer.start()
                 # end of iter
@@ -183,7 +187,7 @@ def train_pipeline(root_path):
     logger.info(f'End of training. Time consumed: {consumed_time}')
     logger.info(f'Last Validation.')
     if opt.get('val') is not None:
-        model.data_root = val_loader.dataset.data_root
+        # model.data_root = val_loader.dataset.data_root
         model.validation(val_loader, tb_logger)
     logger.info('Save the best model.')
     model.save_model(net_only=True, best=True)  # save the best model

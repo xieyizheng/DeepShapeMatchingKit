@@ -6,7 +6,7 @@ manual_seed: 1234
 
 # path
 path:
-  resume_state: checkpoints/dpfm/old/dpfm_cp2p24_dino.pth
+  resume_state: checkpoints/dpfm/dpfm_cp2p24_dino.pth
   resume: false
 
 # datasets

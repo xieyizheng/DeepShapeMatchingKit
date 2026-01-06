@@ -1,46 +1,70 @@
-#  [EchoMatch: Partial-to-Partial Shape Matching via Correspondence Reflection](https://echo-match.github.io/) [(CVPR 2025)](https://openaccess.thecvf.com/content/CVPR2025/html/Xie_EchoMatch_Partial-to-Partial_Shape_Matching_via_Correspondence_Reflection_CVPR_2025_paper.html)
-<a href='https://echo-match.github.io/'><img src='https://img.shields.io/badge/Project-Page-green'></a>  [![PDF](https://img.shields.io/badge/PDF-Download-blue)](https://xieyizheng.com/media/papers/echomatch/echo_match_paper_reduced.pdf)
-
-
-<!-- <p align="center">
-  <img src="https://echo-match.github.io/assets/echo_match_teaser_png.png" width="80%" />
-</p>
-<p align="center">
-  <img src="https://echo-match.github.io/assets/echo_pipeline_png.png" width="80%" />
-</p> -->
-
+#  DeepShapeMatchingKit
 
 <p align="center">
-  <img src="assets/teaser.jpg" width="100%" />
+  <img src="assets/teaser.gif" width="90%" />
 </p>
 
+This codebase provides a collection of deep shape matching methods with improvements on efficiency, correctness and evaluation, including a **33x faster batched functional map solver**. More details are available in this [preprint]().
 
+This codebase is based on [ULRSSM](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/) and includes implementations of:
+- [ULRSSM](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/)
+- [HybridFmaps](https://github.com/xieyizheng/hybridfmaps)
+- [DPFM](https://github.com/pvnieo/DPFM/)
+- [EchoMatch](https://github.com/vikiehm/echo-match)
 
 
 ## Installation
 ```bash
-conda create -n echo-match python=3.10
-conda activate echo-match
+conda create -n deepshapematchingkit python=3.10
+conda activate deepshapematchingkit
 conda install -c nvidia cuda-toolkit # nvcc for complile pytorch3d with cuda support
 pip install -r requirements.txt
 ```
-**PyTorch3D**
+
+
+
+<details>
+<summary><strong>Shell-Energy</strong> (for Elastic Basis)</summary>
+
+If you want to install the `shell-energy` library and its Python bindings, you can do so as follows:
+
+```bash
+git clone https://gitlab.com/numod/shell-energy.git
+cd shell-energy
+mkdir build
+cd build
+cmake -DBUILD_PYTHON=ON .. -DPython_EXECUTABLE=$(which python)
+cmake --build . --config Release
+cp python/pyshell.cpython*.so ../../
+cd ../../
+```
+
+</details>
+
+
+<details>
+<summary><strong>PyTorch3D</strong> (for Diff3F)</summary>
+
 ```bash
 pip install git+https://github.com/facebookresearch/pytorch3d.git@stable
 ```
-PyTorch3D is only required for computing DINO features using the [Diff3F](https://github.com/niladridutt/Diffusion-3D-Features) renderer. The installation can be tricky. If you run into installation issues, please check out the [installation guide](https://github.com/facebookresearch/pytorch3d/blob/main/INSTALL.md). 
 
+PyTorch3D is required for computing DINO features using the [Diff3F](https://github.com/niladridutt/Diffusion-3D-Features) renderer. The installation can be tricky. If you run into installation issues, please check out the [installation guide](https://github.com/facebookresearch/pytorch3d/blob/main/INSTALL.md). 
 
-**Optional**: If you are using a cluster with mixed GPU types, you can specify all your GPU architectures to ensure compatibility, eg:
+<br/>
+
+<strong>Optional</strong>: If you are using a cluster with mixed GPU types, you can specify all your GPU architectures to ensure compatibility, e.g.:
 ```bash
 export TORCH_CUDA_ARCH_LIST="6.0;6.1;7.0;7.5;8.0;8.6+PTX" # much longer compile time
 pip install git+https://github.com/facebookresearch/pytorch3d.git@stable 
 ```
+</details>
+
 
 ## Datasets
 
 To download and set up the datasets:
-1. Run the following script [download_datasets.sh](download_datasets.sh) to automatically download and place the [CP2P24](https://huggingface.co/datasets/xieyizheng/CP2P24) and [PARTIALSMAL](https://github.com/vikiehm/gc-ppsm)  datasets:
+1. Run the following script [download_datasets.sh](download_datasets.sh) to automatically download and place the [CP2P24](https://huggingface.co/datasets/xieyizheng/CP2P24) and [PARTIALSMAL](https://github.com/vikiehm/gc-ppsm)  datasets (also included the datasets used by [ULRSSM](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/)):
    ```bash
    bash download_datasets.sh
    ```
@@ -49,9 +73,7 @@ To download and set up the datasets:
 All datasets placed under `../data/`
 ```Shell
 ├── data
-    ├── CP2P24
-    ├── PARTIALSMAL
-    ├── BeCoS
+    ├── ...
 ```
 We thank the original dataset providers for their contributions to the shape analysis community, and that all credits should go to the original authors.
 
@@ -59,7 +81,7 @@ We thank the original dataset providers for their contributions to the shape ana
 
 You can find all pre-trained models in [checkpoints](checkpoints/echo_match/) and config files in [options](options/echo_match/) for reproducibility.
 
-In the following, we show an example of using echo-match on the PARTIALSMAL dataset using DINO features.
+In the following, we show how to run an experiment.
 
 
 
@@ -71,7 +93,6 @@ In the following, we show an example of using echo-match on the PARTIALSMAL data
 ```python
 python preprocess.py --opt options/echo_match/train/echo_match_psmal_dino.yaml
 ```
-With a single gpu takes around 50 mins on train split and 20 mins on test split.
 
 Optional: `parallel_preprocess.py` with `worker_id` and `num_workers`.
 
@@ -107,12 +128,19 @@ The visualizations will be saved in [visualizations](visualizations) folder.
 <p align="center">
   <img src="assets/visualization_demo.gif" width="100%" />
 </p>
+<details>
+<summary>Legacy visualization script for complete shape matching</summary>
 
+```python
+python visualize_complete.py --opt options/hybrid_ulrssm/test/smal.yaml
+```
+
+</details>
 <!-- ## Pretrained models
 You can find all pre-trained models in [checkpoints](checkpoints) for reproducibility. -->
 
 ## Acknowledgement
-The framework implementation is adapted from [Unsupervised Learning of Robust Spectral Shape Matching](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/), [Deep Partial Functional Maps](https://github.com/pvnieo/DPFM/), [Partial-to-Partial Shape Matching with Geometric Consistency](https://github.com/vikiehm/gc-ppsm/) and [Hybrid Functional Maps for Crease-Aware Non-Isometric Shape Matching](https://github.com/xieyizheng/hybridfmaps).
+The framework implementation is adapted from [Unsupervised Learning of Robust Spectral Shape Matching](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/).
 
 The implementation of DiffusionNet is based on [the official implementation](https://github.com/nmwsharp/diffusion-net).
 
@@ -122,9 +150,40 @@ We thank the original authors for their contributions to this code base.
 
 <!-- : [Nickolas Sharp](https://github.com/nmwsharp/), [Florine Hartwig](https://github.com/flrneha) and [Dongliang Cao](https://github.com/dongliangcao), -->
 
-## Attribution
-Please cite our paper when using the code. You can use the following bibtex
+## Citation
+If you find this codebase useful, please cite:
 ```
+preprint to be released
+```
+
+Please also consider citing the original papers:
+```
+@article{cao2023unsupervised,
+  title={Unsupervised Learning of Robust Spectral Shape Matching},
+  author={Cao, Dongliang and Roetzer, Paul and Bernard, Florian},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={42},
+  number={4},
+  pages={1--15},
+  year={2023},
+  publisher={ACM New York, NY, USA}
+}
+@inproceedings{bastianxie2024hybrid,
+  title={Hybrid Functional Maps for Crease-Aware Non-Isometric Shape Matching},
+  author={Bastian, Lennart and Xie, Yizheng and Navab, Nassir and L{\"a}hner, Zorah},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={3313--3323},
+  month={June},
+  year={2024}
+}
+@inproceedings{attaiki2021dpfm,
+  title={Dpfm: Deep partial functional maps},
+  author={Attaiki, Souhaib and Pai, Gautam and Ovsjanikov, Maks},
+  booktitle={2021 International Conference on 3D Vision (3DV)},
+  pages={175--185},
+  year={2021},
+  organization={IEEE}
+}
 @inproceedings{xiehm2025echomatch,
   title={EchoMatch: Partial-to-Partial Shape Matching via Correspondence Reflection},
   author={Xie, Yizheng and Ehm, Viktoria and Roetzer, Paul and El Amrani, Nafie and Gao, Maolin and Bernard, Florian and Cremers, Daniel},
@@ -133,4 +192,8 @@ Please cite our paper when using the code. You can use the following bibtex
   year={2025}
 }
 
+```
+And my master's thesis:
+```
+bibtex to be added
 ```

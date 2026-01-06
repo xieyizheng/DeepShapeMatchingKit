@@ -130,7 +130,7 @@ class HS_SURFMNetLoss(nn.Module):
 
         losses = dict()
         # Bijectivity penalty
-        if self.w_bij > 0:
+        if self.w_bij >= 0:
             bijectivity_loss = criterion(torch.bmm(C12, C21), eye_batch) + criterion(torch.bmm(C21, C12), eye_batch)
             bijectivity_loss *= self.w_bij
             losses['l_bij'] = bijectivity_loss

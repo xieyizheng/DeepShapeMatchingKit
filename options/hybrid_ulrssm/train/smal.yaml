@@ -43,10 +43,15 @@ datasets:
 # network setting
 networks:
   feature_extractor:
-    type: DiffusionNet
+    type: DiffusionNet_B
     in_channels: 3
     out_channels: 256
     input_type: xyz
+    augmentation:
+      train:
+        rot_x: 0.0
+        rot_y: 90.0
+        rot_z: 0.0
   fmap_net:
     type: FasterRegularizedFMNet
     bidirectional: true

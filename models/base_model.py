@@ -242,8 +242,8 @@ class BaseModel:
                 tb_logger.add_scalar('val avg error', avg_geo_error, global_step=step)
             else:
                 wandb.log({
-                    'val auc': auc,
-                    'val avg error': avg_geo_error,
+                    'test auc': auc,
+                    'test avg error': avg_geo_error,
                 })
                 # save image
                 plt.savefig(os.path.join(self.opt['path']['results_root'], 'pck.png'))

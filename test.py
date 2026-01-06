@@ -45,7 +45,7 @@ def test_pipeline(root_path):
     for test_loader in test_loaders:
         test_set_name = test_loader.dataset.__class__.__name__
         logger.info(f'Testing {test_set_name}...')
-        model.data_root = test_loader.dataset.data_root
+        # model.data_root = test_loader.dataset.data_root
         model.validation(test_loader, tb_logger=None, update=False)
 
 

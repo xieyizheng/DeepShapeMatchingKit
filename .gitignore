@@ -168,3 +168,23 @@ data
 
 # visualization
 visualizations/
+
+
+
+checkpoints/hybrid_ulrssm_a
+
+checkpoints/ulrssm_a
+
+networks/echo_match_b_network.py
+networks/echo_match_c_network.py
+
+
+models/echo_ulrssm_model.py
+
+
+scratch
+
+
+validate.py
+
+networks/diffusion_c_network.py
