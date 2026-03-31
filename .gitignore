@@ -188,3 +188,5 @@ scratch
 validate.py
 
 networks/diffusion_c_network.py
+
+prototype/

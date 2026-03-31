@@ -1,10 +1,17 @@
-#  DeepShapeMatchingKit
+#  [DeepShapeMatchingKit](https://github.com/xieyizheng/DeepShapeMatchingKit)
 
 <p align="center">
-  <img src="assets/teaser.gif" width="90%" />
+  <img src="assets/teaser.jpg" width="100%" />
 </p>
 
-This codebase provides a collection of deep shape matching methods with improvements on efficiency, correctness and evaluation, including a **33x faster batched functional map solver**. More details are available in this [preprint]().
+This codebase provides a collection of deep shape matching methods with improvements on efficiency, understanding and evaluation, including a **33x faster batched functional map solver**. More details are available in our [paper]().
+
+| Implementation | ULRSSM | Hybrid ULRSSM | AttentiveFmaps | AttentiveFmaps-Fast | DPFM | EchoMatch |
+|----------------|--------|----------------|----------------|----------------------|------|-----------|
+| Original       | 429 ms | 555 ms         | 2050 ms        | 578 ms               | 115 ms | 215 ms   |
+| Ours           | **82 ms** | 363 ms      | 448 ms         | 416 ms               | 95 ms  | 195 ms   |
+| Speedup (×)    | **5.23** | 1.53         | 4.57           | 1.39                 | 1.21   | 1.10     |
+| Memory (+)     | 126 MB | 30 MB          | 142 MB         | 76 MB                | 2 MB   | 2 MB     |
 
 This codebase is based on [ULRSSM](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/) and includes implementations of:
 - [ULRSSM](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/)
@@ -64,7 +71,7 @@ pip install git+https://github.com/facebookresearch/pytorch3d.git@stable
 ## Datasets
 
 To download and set up the datasets:
-1. Run the following script [download_datasets.sh](download_datasets.sh) to automatically download and place the [CP2P24](https://huggingface.co/datasets/xieyizheng/CP2P24) and [PARTIALSMAL](https://github.com/vikiehm/gc-ppsm)  datasets (also included the datasets used by [ULRSSM](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/)):
+1. Run the following script [download_datasets.sh](download_datasets.sh) from the root directory to automatically download and place the datasets:
    ```bash
    bash download_datasets.sh
    ```
@@ -79,7 +86,7 @@ We thank the original dataset providers for their contributions to the shape ana
 
 ## Pre-trained Models
 
-You can find all pre-trained models in [checkpoints](checkpoints/echo_match/) and config files in [options](options/echo_match/) for reproducibility.
+You can find all pre-trained models in [checkpoints](checkpoints/) and config files in [options](options/) for reproducibility.
 
 In the following, we show how to run an experiment.
 
@@ -193,7 +200,7 @@ Please also consider citing the original papers:
 }
 
 ```
-And my master's thesis:
+<!-- And my master's thesis:
 ```
 bibtex to be added
-```
+``` -->
