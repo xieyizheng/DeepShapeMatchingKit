@@ -4,14 +4,16 @@
   <img src="assets/teaser.jpg" width="100%" />
 </p>
 
-This codebase provides a collection of deep shape matching methods with improvements on efficiency, understanding and evaluation, including a **33x faster batched functional map solver**. More details are available in our [paper]().
+This codebase provides a collection of deep shape matching methods with improvements in efficiency, understanding, and evaluation, including a **33× faster batched functional map solver**. More details are available in our [paper]().
 
-| Implementation | ULRSSM | Hybrid ULRSSM | AttentiveFmaps | AttentiveFmaps-Fast | DPFM | EchoMatch |
-|----------------|--------|----------------|----------------|----------------------|------|-----------|
-| Original       | 429 ms | 555 ms         | 2050 ms        | 578 ms               | 115 ms | 215 ms   |
-| Ours           | **82 ms** | 363 ms      | 448 ms         | 416 ms               | 95 ms  | 195 ms   |
-| Speedup (×)    | **5.23** | 1.53         | 4.57           | 1.39                 | 1.21   | 1.10     |
-| Memory (+)     | 126 MB | 30 MB          | 142 MB         | 76 MB                | 2 MB   | 2 MB     |
+| Implementation | ULRSSM | Hybrid ULRSSM | AttentiveFmaps* | AttentiveFmaps-Fast* | DPFM | EchoMatch |
+|----------------|--------|----------------|------------------|------------------------|------|-----------|
+| Original       | 429 ms | 555 ms         | 2050 ms          | 578 ms                 | 115 ms | 215 ms   |
+| Ours           | **82 ms** | 363 ms      | 448 ms           | 416 ms                 | 95 ms  | 195 ms   |
+| Speedup (×)    | **5.23** | 1.53         | 4.57             | 1.39                   | 1.21   | 1.10     |
+| Memory (+)     | 126 MB | 30 MB          | 142 MB           | 76 MB                  | 2 MB   | 2 MB     |
+
+<sub>*Runtime measured per training iteration. AttentiveFmaps are not yet included in this repository.</sub>
 
 This codebase is based on [ULRSSM](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/) and includes implementations of:
 - [ULRSSM](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/)
