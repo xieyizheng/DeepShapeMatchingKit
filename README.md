@@ -1,11 +1,16 @@
 
 
-<h1><img src="assets/logo.png" width="50" alt="DeepShapeMatchingKit logo" vertical-align="middle"/> DeepShapeMatchingKit</h1>
-
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td valign="middle"><img src="assets/logo.png" width="70" alt="DeepShapeMatchingKit logo"/></td>
+<td valign="middle"><h1>DeepShapeMatchingKit</h1>
 <a href="..."><img src="https://img.shields.io/badge/arXiv-paper-red"/></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0-green"/></a>
 <img src="https://img.shields.io/badge/python-3.10-blue?logo=python&logoColor=white"/>
 <img src="https://img.shields.io/badge/PyTorch-%3E%3D2.3.0-orange?logo=pytorch"/>
+</td>
+</tr>
+</table>
 
 <!-- --- -->
 
@@ -14,7 +19,7 @@
 </p>
 
 
-This codebase provides a collection of deep shape matching methods with a few contributions to improve efficiency, understanding, and evaluation, including a **33× faster batched functional map solver**. More details are described in our [paper]().
+DeepShapeMatchingKit provides a collection of deep shape matching methods with a few contributions to improve efficiency, understanding, and evaluation, including a **33× faster batched functional map solver**. More details are described in our [paper]().
 
 This codebase is based on [ULRSSM](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/) and includes implementations of:
 
