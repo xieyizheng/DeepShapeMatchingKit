@@ -1,7 +1,7 @@
 
 
-<img src="assets/logo.png" width="65" alt="DeepShapeMatchingKit logo" align="left"/>
-<b><font size="6">&nbsp;&nbsp;DeepShapeMatchingKit</font></b><br/>
+<img src="assets/logo3.png" width="80" alt="DeepShapeMatchingKit logo" align="left"/>
+<h1>&nbsp;DeepShapeMatchingKit</h1>
 <p>
 &nbsp;<a href="..."><img src="https://img.shields.io/badge/arXiv-paper-red"/></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0-green"/></a>
