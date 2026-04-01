@@ -1,16 +1,14 @@
 
 
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td valign="middle"><img src="assets/logo.png" width="70" alt="DeepShapeMatchingKit logo"/></td>
-<td valign="middle"><h1>DeepShapeMatchingKit</h1>
-<a href="..."><img src="https://img.shields.io/badge/arXiv-paper-red"/></a>
+<img src="assets/logo.png" width="65" alt="DeepShapeMatchingKit logo" align="left"/>
+<b><font size="6">&nbsp;&nbsp;DeepShapeMatchingKit</font></b><br/>
+<p>
+&nbsp;&nbsp;&nbsp;<a href="..."><img src="https://img.shields.io/badge/arXiv-paper-red"/></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0-green"/></a>
 <img src="https://img.shields.io/badge/python-3.10-blue?logo=python&logoColor=white"/>
 <img src="https://img.shields.io/badge/PyTorch-%3E%3D2.3.0-orange?logo=pytorch"/>
-</td>
-</tr>
-</table>
+</p>
+<br clear="left"/>
 
 <!-- --- -->
 
