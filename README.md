@@ -1,25 +1,48 @@
-#  [DeepShapeMatchingKit](https://github.com/xieyizheng/DeepShapeMatchingKit)
+
+
+<div align="left">
+
+<table>
+<tr>
+<td align="center" valign="middle">
+  <img src="assets/logo.png" width="70" alt="DeepShapeMatchingKit logo"/>
+</td>
+<td align="left" valign="middle">
+  <b><span style="font-size: 2em;">DeepShapeMatchingKit</span></b><br/>
+  <!-- <sub>A codebase for deep functional map-based shape matching</sub> -->
+  <p style="margin: 0;">
+    <a href="..."><img src="https://img.shields.io/badge/arXiv-paper-red"/></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0-green"/></a>
+    <img src="https://img.shields.io/badge/python-3.10-blue?logo=python&logoColor=white"/>
+    <img src="https://img.shields.io/badge/PyTorch-%3E%3D2.3.0-orange?logo=pytorch"/>
+  </p>
+</td>
+</tr>
+</table>
+</div>
+
+<!-- --- -->
 
 <p align="center">
-  <img src="assets/teaser.jpg" width="100%" />
+  <img src="assets/teaser.jpg" width="95%"/>
 </p>
 
-This codebase provides a collection of deep shape matching methods with improvements in efficiency, understanding, and evaluation, including a **33× faster batched functional map solver**. More details are available in our [paper]().
 
-| Implementation | ULRSSM | Hybrid ULRSSM | AttentiveFmaps* | AttentiveFmaps-Fast* | DPFM | EchoMatch |
-|----------------|--------|----------------|------------------|------------------------|------|-----------|
-| Original       | 429 ms | 555 ms         | 2050 ms          | 578 ms                 | 115 ms | 215 ms   |
-| Ours           | **82 ms** | 363 ms      | 448 ms           | 416 ms                 | 95 ms  | 195 ms   |
-| Speedup (×)    | **5.23** | 1.53         | 4.57             | 1.39                   | 1.21   | 1.10     |
-| Memory (+)     | 126 MB | 30 MB          | 142 MB           | 76 MB                  | 2 MB   | 2 MB     |
-
-<sub>*Runtime measured per training iteration. AttentiveFmaps are not yet included in this repository.</sub>
+This codebase provides a collection of deep shape matching methods with a few contributions to improve efficiency, understanding, and evaluation, including a **33× faster batched functional map solver**. More details are described in our [paper]().
 
 This codebase is based on [ULRSSM](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/) and includes implementations of:
-- [ULRSSM](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/)
-- [HybridFmaps](https://github.com/xieyizheng/hybridfmaps)
-- [DPFM](https://github.com/pvnieo/DPFM/)
-- [EchoMatch](https://github.com/vikiehm/echo-match)
+
+| Method | Paper | Year | Original | Ours | Speedup (×) |
+|--------|-------|------|----------|------|-------------|
+| ULRSSM | [Cao et al.](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/) | 2023 | 429 ms | **82 ms** | **5.23** |
+| Hybrid ULRSSM | [Bastian & Xie et al.](https://github.com/xieyizheng/hybridfmaps) | 2024 | 555 ms | 363 ms | 1.53 |
+| DPFM | [Attaiki et al.](https://github.com/pvnieo/DPFM/) | 2021 | 115 ms | **95 ms** | 1.21 |
+| EchoMatch | [Xie & Ehm et al.](https://github.com/vikiehm/echo-match) | 2025 | 215 ms | 195 ms | 1.10 |
+| AttentiveFmaps 🔜 | [Li et al.](https://github.com/craigleili/AttentiveFMaps) | 2022 | 2050 ms | 448 ms | **4.57** |
+
+<sub>Runtime measured per training iteration. AttentiveFmaps is not yet included in this repository; speedup was tested in the original implementation.</sub>
+
+Contributions are welcome! Whether it's adding new methods, improving existing implementations, or fixing bugs — feel free to open an issue or submit a pull request.
 
 
 ## Installation
@@ -52,7 +75,7 @@ cd ../../
 
 
 <details>
-<summary><strong>PyTorch3D</strong> (for Diff3F)</summary>
+<summary><strong>PyTorch3D</strong> (for Diff3F Features)</summary>
 
 ```bash
 pip install git+https://github.com/facebookresearch/pytorch3d.git@stable
@@ -177,7 +200,7 @@ Please also consider citing the original papers:
   year={2023},
   publisher={ACM New York, NY, USA}
 }
-@inproceedings{bastianxie2024hybrid,
+@inproceedings{bastian2024hybrid,
   title={Hybrid Functional Maps for Crease-Aware Non-Isometric Shape Matching},
   author={Bastian, Lennart and Xie, Yizheng and Navab, Nassir and L{\"a}hner, Zorah},
   booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
@@ -193,7 +216,7 @@ Please also consider citing the original papers:
   year={2021},
   organization={IEEE}
 }
-@inproceedings{xiehm2025echomatch,
+@inproceedings{xie2025echomatch,
   title={EchoMatch: Partial-to-Partial Shape Matching via Correspondence Reflection},
   author={Xie, Yizheng and Ehm, Viktoria and Roetzer, Paul and El Amrani, Nafie and Gao, Maolin and Bernard, Florian and Cremers, Daniel},
   booktitle={Proceedings of the Computer Vision and Pattern Recognition Conference},
