@@ -1,25 +1,11 @@
 
 
-<div align="left">
+<h1><img src="assets/logo.png" width="50" alt="DeepShapeMatchingKit logo" vertical-align="middle"/> DeepShapeMatchingKit</h1>
 
-<table>
-<tr>
-<td align="center" valign="middle">
-  <img src="assets/logo.png" width="70" alt="DeepShapeMatchingKit logo"/>
-</td>
-<td align="left" valign="middle">
-  <b><span style="font-size: 2em;">DeepShapeMatchingKit</span></b><br/>
-  <!-- <sub>A codebase for deep functional map-based shape matching</sub> -->
-  <p style="margin: 0;">
-    <a href="..."><img src="https://img.shields.io/badge/arXiv-paper-red"/></a>
-    <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0-green"/></a>
-    <img src="https://img.shields.io/badge/python-3.10-blue?logo=python&logoColor=white"/>
-    <img src="https://img.shields.io/badge/PyTorch-%3E%3D2.3.0-orange?logo=pytorch"/>
-  </p>
-</td>
-</tr>
-</table>
-</div>
+<a href="..."><img src="https://img.shields.io/badge/arXiv-paper-red"/></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0-green"/></a>
+<img src="https://img.shields.io/badge/python-3.10-blue?logo=python&logoColor=white"/>
+<img src="https://img.shields.io/badge/PyTorch-%3E%3D2.3.0-orange?logo=pytorch"/>
 
 <!-- --- -->
 
@@ -35,9 +21,9 @@ This codebase is based on [ULRSSM](https://github.com/dongliangcao/Unsupervised-
 | Method | Paper | Year | Original | Ours | Speedup (×) |
 |--------|-------|------|----------|------|-------------|
 | ULRSSM | [Cao et al.](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/) | 2023 | 429 ms | **82 ms** | **5.23** |
-| Hybrid ULRSSM | [Bastian & Xie et al.](https://github.com/xieyizheng/hybridfmaps) | 2024 | 555 ms | 363 ms | 1.53 |
+| Hybrid ULRSSM | [Bastian et al.](https://github.com/xieyizheng/hybridfmaps) | 2024 | 555 ms | 363 ms | 1.53 |
 | DPFM | [Attaiki et al.](https://github.com/pvnieo/DPFM/) | 2021 | 115 ms | **95 ms** | 1.21 |
-| EchoMatch | [Xie & Ehm et al.](https://github.com/vikiehm/echo-match) | 2025 | 215 ms | 195 ms | 1.10 |
+| EchoMatch | [Xie et al.](https://github.com/vikiehm/echo-match) | 2025 | 215 ms | 195 ms | 1.10 |
 | AttentiveFmaps 🔜 | [Li et al.](https://github.com/craigleili/AttentiveFMaps) | 2022 | 2050 ms | 448 ms | **4.57** |
 
 <sub>Runtime measured per training iteration. AttentiveFmaps is not yet included in this repository; speedup was tested in the original implementation.</sub>
