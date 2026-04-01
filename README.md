@@ -1,13 +1,9 @@
+<img src="assets/logo3.png" width="90" alt="logo" align="left"/>
 
+<h1>DeepShapeMatchingKit</h1>
 
-<img src="assets/logo3.png" width="80" alt="DeepShapeMatchingKit logo" align="left"/>
-<h1>&nbsp;DeepShapeMatchingKit</h1>
-<p>
-&nbsp;<a href="..."><img src="https://img.shields.io/badge/arXiv-paper-red"/></a>
-<a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0-green"/></a>
-<img src="https://img.shields.io/badge/python-3.10-blue?logo=python&logoColor=white"/>
-<img src="https://img.shields.io/badge/PyTorch-%3E%3D2.3.0-orange?logo=pytorch"/>
-</p>
+[![arXiv paper](https://img.shields.io/badge/arXiv-paper-red)](...) [![license GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-green)](LICENSE) ![python 3.10](https://img.shields.io/badge/python-3.10-blue?logo=python&logoColor=white) ![PyTorch >=2.3.0](https://img.shields.io/badge/PyTorch-%3E%3D2.3.0-orange?logo=pytorch)
+
 <br clear="left"/>
 
 <!-- --- -->
