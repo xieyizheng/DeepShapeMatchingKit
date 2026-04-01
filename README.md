@@ -1,9 +1,11 @@
-<img src="assets/logo3.png" width="90" alt="logo" align="left"/>
-
-<h1>DeepShapeMatchingKit</h1>
+<div>
+  <img src="assets/logo3.png" width="60" alt="logo" align="left"/>
+  <h3><b>DeepShapeMatchingKit</b></h3>
+  <p>
 
 [![arXiv paper](https://img.shields.io/badge/arXiv-paper-red)](...) [![license GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-green)](LICENSE) ![python 3.10](https://img.shields.io/badge/python-3.10-blue?logo=python&logoColor=white) ![PyTorch >=2.3.0](https://img.shields.io/badge/PyTorch-%3E%3D2.3.0-orange?logo=pytorch)
-
+  </p>
+</div>
 <br clear="left"/>
 
 <!-- --- -->
