@@ -1,5 +1,5 @@
 <div>
-  <img src="assets/logo3.png" width="60" alt="logo" align="left"/>
+  <img src="assets/icon.png" width="60" alt="logo" align="left"/>
   <h3><b>DeepShapeMatchingKit</b></h3>
   <p>
 
