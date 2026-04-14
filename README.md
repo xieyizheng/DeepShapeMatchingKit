@@ -3,7 +3,7 @@
   <h3><b>DeepShapeMatchingKit</b></h3>
   <p>
 
-[![arXiv paper](https://img.shields.io/badge/arXiv-paper-red)](...) [![license GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-green)](LICENSE) ![python 3.10](https://img.shields.io/badge/python-3.10-blue?logo=python&logoColor=white) ![PyTorch >=2.3.0](https://img.shields.io/badge/PyTorch-%3E%3D2.3.0-orange?logo=pytorch)
+[![arXiv paper](https://img.shields.io/badge/arXiv-paper-red)](http://arxiv.org/abs/2604.10377) [![license GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-green)](LICENSE) ![python 3.10](https://img.shields.io/badge/python-3.10-blue?logo=python&logoColor=white) ![PyTorch >=2.3.0](https://img.shields.io/badge/PyTorch-%3E%3D2.3.0-orange?logo=pytorch)
   </p>
 </div>
 <br clear="left"/>
@@ -15,7 +15,7 @@
 </p>
 
 
-DeepShapeMatchingKit provides a collection of deep shape matching methods with a few contributions to improve efficiency, understanding, and evaluation, including a **33× faster batched functional map solver**. More details are described in our [paper]().
+DeepShapeMatchingKit provides a collection of deep shape matching methods with a few contributions to improve efficiency, understanding, and evaluation, including a **33× faster batched functional map solver**. More details are described in our [paper](https://arxiv.org/pdf/2604.10377).
 
 This codebase is based on [ULRSSM](https://github.com/dongliangcao/Unsupervised-Learning-of-Robust-Spectral-Shape-Matching/) and includes implementations of:
 
@@ -172,7 +172,15 @@ We thank the original authors for their contributions to this code base.
 ## Citation
 If you find this codebase useful, please cite:
 ```
-preprint to be released
+@misc{xie2026deepshapematchingkitacceleratedfunctionalmap,
+      title={DeepShapeMatchingKit: Accelerated Functional Map Solver and Shape Matching Pipelines Revisited}, 
+      author={Yizheng Xie and Lennart Bastian and Congyue Deng and Thomas W. Mitchel and Maolin Gao and Daniel Cremers},
+      year={2026},
+      eprint={2604.10377},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2604.10377}, 
+}
 ```
 
 Please also consider citing the original papers:
