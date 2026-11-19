@@ -96,6 +96,27 @@ All datasets placed under `../data/`
 ```
 We thank the original dataset providers for their contributions to the shape analysis community, and that all credits should go to the original authors.
 
+## EchoMatch PARTIALSMAL XYZ on Marvin
+
+Submit the baseline from the repository root with `sbatch baseline_echomatch.sbatch`.
+The launcher uses the existing XYZ test configuration, which expects the official
+test data at `../data/PARTIALSMAL/test` and the published checkpoint under
+`checkpoints/echo_match/`. It loads the Marvin Python 3.10.8 module and activates
+`$HOME/.venvs/deepshapematchingkit`.
+
+To generate the research train/validation split from the official training data:
+
+```bash
+python scripts/create_partialsmal_split.py \
+  --source ../data/PARTIALSMAL/train \
+  --destination /path/to/scratch/partialsmal_split_seed1234
+```
+
+The default split has 272 training and 32 validation directional maps. Both
+directions of a pair stay together, and individual shapes can appear in both
+splits. Keep `manifest.json` with run records. The generated dataset uses symlinks
+to the original files, and the destination must be new.
+
 ## Pre-trained Models
 
 You can find all pre-trained models in [checkpoints](checkpoints/) and config files in [options](options/) for reproducibility.
